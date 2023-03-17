@@ -32,9 +32,7 @@ func findMax(arr []int, k int) int {
 func main() {
 
 	arr := [10]int{4, 2, 1, 7, 8, 1, 2, 8, 1, 0}
-	k := 3
+	k := 3 // jumlah urutan
 
 	fmt.Println(findMax(arr[:], k))
-	//fmt.Println("vim-go")
-
 }

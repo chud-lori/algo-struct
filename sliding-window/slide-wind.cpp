@@ -1,5 +1,4 @@
 #include <iostream>
-//#include <bits/stdc++.h>
 #include <algorithm>
 
 using namespace std;
@@ -21,8 +20,8 @@ int findMax(int arr[], int lenarr, int k) {
 }
 
 int main(){
-    int arr[10] = {4, 2, 1, 7, 8, 1, 2, 8, 1, 0};
-    int k = 3;
+    int arr[10] = {4, 2, 1, 7, 8, 1, 2, 8, 1, 0}; // array data
+    int k = 3; // jumlah urutan
     int lenarr = sizeof(arr)/sizeof(arr[0]);
 
     cout << findMax(arr, lenarr, k) << endl;

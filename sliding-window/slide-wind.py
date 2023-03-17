@@ -15,10 +15,9 @@ def find_max(arr, k):
 
 def main():
     arr = [4, 2, 1, 7, 8, 1, 2, 8, 1, 0]
-    k = 3
+    k = 3 # jumlah urutan
 
     print(find_max(arr, k))
 
 if __name__ == "__main__":
     main()
-
