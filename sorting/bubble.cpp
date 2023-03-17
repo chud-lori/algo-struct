@@ -31,9 +31,15 @@ int main(){
     int arr[] = {3, 1, 9, 8, 7, 2, 4, 10, 6, 5};
     int size = sizeof(arr)/sizeof(arr[0]);
 
-    bubbleSort(arr, size);
-    cout << "Sorted array:" << endl;
+    cout << "Unsorted array: ";
     printArray(arr, size);
-    
+
+    // sorting
+    bubbleSort(arr, size);
+    cout << endl;
+
+    cout << "Sorted array: ";
+    printArray(arr, size);
+
     return 0;
 }

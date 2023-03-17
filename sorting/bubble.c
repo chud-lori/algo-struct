@@ -17,12 +17,20 @@ int main(){
     int arr[] = {3, 1, 9, 8, 7, 2, 4, 10, 6, 5};
     int size = sizeof(arr)/sizeof(arr[0]);
 
+    printf("Before sorting: ");
+    for(int i=0; i<size; i++){
+        printf("%d, ", arr[i]);
+    }
+
     bubbleSort(arr, size);
 
+    printf("\n");
+
+    printf("After sorting: ");
     for(int i=0; i<size; i++){
-        printf("%d", arr[i]);
+        printf("%d, ", arr[i]);
     }
+    printf("");
 
     return 0;
 }
-

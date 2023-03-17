@@ -16,8 +16,8 @@ func bubbleSort(arr []int) {
 }
 
 func main() {
-	fmt.Println("vim-go")
 	arr := []int{3, 1, 9, 8, 7, 2, 4, 10, 6, 5} // slice
+	fmt.Println("before:", arr)
 	bubbleSort(arr)
-	fmt.Println(arr)
+	fmt.Println("before:", arr)
 }

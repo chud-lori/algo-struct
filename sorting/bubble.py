@@ -15,8 +15,9 @@ def bubble_sort(arr):
 
 def main():
     arr = [3, 1, 9, 8, 7, 2, 4, 10, 6, 5]
+    print("Before sorting: ", arr)
     bubble_sort(arr)
-    print(arr)
+    print("After sorting: ", arr)
 
 
 if __name__ == "__main__":
