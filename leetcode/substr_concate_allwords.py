@@ -88,7 +88,6 @@ def findSubstringHelp(s: str, words: list):
             # we need i as starting point
             start = i + j * word_len
             word = s[start:start + word_len]
-            print(word)
             if word in word_map:
                 seen[word] = seen.get(word, 0) + 1
                 # check if word shown in s is more than in word map count
@@ -112,10 +111,10 @@ if __name__ == "__main__":
     words = ["foo", "bar"]
     assert findSubstringHelp(s, words) == [0,9]
 
-    #s = "barfoofoobarthefoobarman"
-    #words = ["bar","foo","the"]
-    #assert findSubstringHelp(s, words) == [6,9,12]
+    s = "barfoofoobarthefoobarman"
+    words = ["bar","foo","the"]
+    assert findSubstringHelp(s, words) == [6,9,12]
 
-    #s = "wordgoodgoodgoodbestword"
-    #words = ["word","good","best","word"]
-    #assert findSubstringHelp(s, words) == []
+    s = "wordgoodgoodgoodbestword"
+    words = ["word","good","best","word"]
+    assert findSubstringHelp(s, words) == []
