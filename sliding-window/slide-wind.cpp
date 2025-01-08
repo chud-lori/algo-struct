@@ -11,7 +11,9 @@ int findMax(int arr[], int lenarr, int k) {
 
     for (int i=0; i < arrlength; i++) {
         currentRunningSum += arr[i];
+        cout << "i outside" << i << endl;
         if (i >= k - 1) {
+            cout << "i inside" << i << endl;
             maxVal = std::max(maxVal, currentRunningSum);
             currentRunningSum -= arr[i - (k-1)];
         }
