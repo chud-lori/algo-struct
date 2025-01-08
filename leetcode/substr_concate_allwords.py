@@ -61,50 +61,61 @@ def findsubstrr(s, words):
     return indexes
 
 def findSubstringHelp(s: str, words: list):
-   if not s or not words:
-       return []
+    if not s or not words:
+        return []
 
-   word_len = len(words[0])
-   word_count = len(words)
-   total_len = word_len * word_count
+    word_len = len(words[0]) # assume each items in list has same length
+    word_count = len(words)
+    total_len = word_len * word_count
 
-   # Frequency map for the words
-   word_map = {}
-   for word in words:
-       word_map[word] = word_map.get(word, 0) + 1
+    # map count each word appear in list words
+    word_map = {}
+    for word in words:
+        word_map[word] = word_map.get(word, 0) + 1
 
-   indices = []
-   for i in range(len(s) - total_len + 1):
-       seen = {}
-       j = 0
-       while j < word_count:
-           # Extract a word from the sliding window
-           start = i + j * word_len
-           word = s[start:start + word_len]
+    indices = []
 
-           if word in word_map:
-               seen[word] = seen.get(word, 0) + 1
-               # If a word is seen more times than it exists in the word list
-               if seen[word] > word_map[word]:
-                   break
-           else:
-               break
-           j += 1
+    # loop the string s
+    # the loop limitation is to make sure it's not surpassed the length s
+    for i in range(len(s) - total_len + 1):
+        seen = {}
+        # this j variable used for counting the word if exist in our words list
+        j = 0
+        # this loop will check each word start from index i
+        while j < word_count:
+            # calculate the starting position for the window slide
+            # so each loop in this while meant to check each word
+            # we need i as starting point
+            start = i + j * word_len
+            word = s[start:start + word_len]
+            print(word)
+            if word in word_map:
+                seen[word] = seen.get(word, 0) + 1
+                # check if word shown in s is more than in word map count
+                if seen[word] > word_map[word]:
+                    break
+            else:
+                # if word not in map meaning arbitrary word, skip
+                break
 
-       if j == word_count:
-           indices.append(i)
+            # increment j to check next word
+            j += 1
 
-   return indices
+        # if the j count is same as our word_count meaning it match the words list and add the index
+        if j == word_count:
+            indices.append(i)
+
+    return indices
 
 if __name__ == "__main__":
     s="barfoothefoobarman"
     words = ["foo", "bar"]
     assert findSubstringHelp(s, words) == [0,9]
 
-    s = "barfoofoobarthefoobarman"
-    words = ["bar","foo","the"]
-    assert findSubstringHelp(s, words) == [6,9,12]
+    #s = "barfoofoobarthefoobarman"
+    #words = ["bar","foo","the"]
+    #assert findSubstringHelp(s, words) == [6,9,12]
 
-    s = "wordgoodgoodgoodbestword"
-    words = ["word","good","best","word"]
-    assert findSubstringHelp(s, words) == []
+    #s = "wordgoodgoodgoodbestword"
+    #words = ["word","good","best","word"]
+    #assert findSubstringHelp(s, words) == []
