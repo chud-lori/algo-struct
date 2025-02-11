@@ -55,5 +55,34 @@ def isValidSudoku(board: List[List[str]]):
 
     return True
 
-print(isValid(board))
+def isValidOpt(board: List[List[str]]):
+    """
+    In this optimized function, it will build the col, row, and box
+    into a set and then it will push and check on each loop in one go
+    """
+    rows = [set() for _ in range(9)]
+    cols = [set() for _ in range(9)]
+    boxes = [set() for _ in range(9)]
+
+    for i in range(9):
+        for j in range(9):
+            val = board[i][j]
+            if val == ".":
+                continue
+
+            # Calculate box index (0-8) from row and column
+            # (i // 3) * 3 --> representing the row
+            # j // 3 represinting the col within row
+            box_idx = (i // 3) * 3 + j // 3
+
+            if (val in rows[i] or val in cols[j] or val in boxes[box_idx] or not val.isdigit() or int(val) < 1 or int(val) > 9):
+                return False
+
+            rows[i].add(val)
+            cols[j].add(val)
+            boxes[box_idx].add(val)
+
+    return True
+
+print(isValidOpt(board))
 
