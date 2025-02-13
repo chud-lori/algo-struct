@@ -51,13 +51,21 @@ class Node:
 
     def preorderTraversal(self):
         # root -> left -> right
-        if self is not None:
+        if self.data is not None:
             print(self.data, end=" ")
             if self.left is not None:
                 self.left.preorderTraversal()
             if self.right is not None:
                 self.right.preorderTraversal()
 
+    def postorderTraversal(self):
+        # left -> right -> root
+        if self.data is not None:
+            if self.left is not None:
+                self.left.postorderTraversal()
+            if self.right is not None:
+                self.right.postorderTraversal()
+            print(self.data, end=" ")
 
 if __name__ == "__main__":
     root = Node(20)
@@ -75,6 +83,7 @@ if __name__ == "__main__":
 
 inorder traversal 13 15 17 20 30 40
 preorder traversal 20 15 13 30 40
+postorder traversal 13 17 15 40 30 20
     """
 
     print("Inorder Traversal")
@@ -82,6 +91,9 @@ preorder traversal 20 15 13 30 40
     print("\n")
     print("Preorder Traversal")
     root.preorderTraversal()
+    print("\n")
+    print("Postorder Traversal")
+    root.postorderTraversal()
     print()
     # root.search(15)
 
