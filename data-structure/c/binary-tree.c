@@ -17,6 +17,10 @@ Node* createNode(int data) {
 }
 
 void insertBST(Node** root, int data) {
+    /*
+     * pass pointer of pointer of root to pass by reference
+     * bcs the way we defined root as pointer of Node instead of just Node
+    */
     Node* newNode = createNode(data);
     if(*root == NULL) {
         *root = newNode;
@@ -114,6 +118,21 @@ void inorderTraversal(Node* root) {
     inorderTraversal(root->right);
 }
 
+void preorderTraversal(Node* root) {
+    if(root == NULL) return;
+
+    printf("%d ", root->data);
+    preorderTraversal(root->left);
+    preorderTraversal(root->right);
+}
+
+void postorderTraversal(Node* root) {
+    if(root == NULL) return;
+    postorderTraversal(root->left);
+    postorderTraversal(root->right);
+    printf("%d ", root->data);
+}
+
 
 void freeTree(Node* root) {
     if (root == NULL)
@@ -142,6 +161,17 @@ int main() {
     printf("Inorder traversal of the binary search tree: ");
     inorderTraversal(root);
     printf("\n");
+
+    printf("Preorder traversal of the binary search tree: ");
+    preorderTraversal(root);
+    printf("\n");
+
+    printf("Postorder traversal of the binary search tree: ");
+    postorderTraversal(root);
+    printf("\n");
+
+
+
     freeTree(root);
 
     return 0;
