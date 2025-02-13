@@ -29,7 +29,20 @@ void insertBST(Node** root, int data) {
             rootNode->left = newNode;
         }
         else {
+            // here, after traverse using recursive
+            // if the newNode is inserted let's say in the above if condition
+            // where left is null, then all's good
+            // BUT, if the parent call doesn't insert the data
+            // meaning the left is not null
+            // then it will call recursive of insertBST, right?
+            // where in that recursive it will create another newNode
+            // that's why the parent call should check if the current node of left
+            // is the newNode, if not it will freed the newNode because not inserted anywhere
+            // but has memory allocated in createNode() function
             insertBST(&rootNode->left, data);
+            if (rootNode->left == newNode) return;
+            free(newNode);
+            return;
         }
     }
     else if (data > rootNode->data) {
@@ -38,9 +51,16 @@ void insertBST(Node** root, int data) {
         }
         else {
             insertBST(&rootNode->right, data);
+            if (rootNode->right == newNode) return;
+            free(newNode);
+            return;
         }
     }
-    //free(newNode);
+    else {
+        // duplicated data will free immidiately
+        free(newNode);
+        return;
+    }
 }
 
 void insert(Node** root, int data) {
@@ -93,6 +113,7 @@ void inorderTraversal(Node* root) {
     printf("%d ", root->data);
     inorderTraversal(root->right);
 }
+
 
 void freeTree(Node* root) {
     if (root == NULL)
