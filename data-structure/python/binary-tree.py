@@ -82,7 +82,7 @@ if __name__ == "__main__":
  13  17    40
 
 inorder traversal 13 15 17 20 30 40
-preorder traversal 20 15 13 30 40
+preorder traversal 20 15 13 17 30 40
 postorder traversal 13 17 15 40 30 20
     """
 
