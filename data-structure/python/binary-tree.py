@@ -41,12 +41,23 @@ class Node:
             print(f"FOUND {self.data}")
 
     def inorderTraversal(self):
+        # left -> root -> right
         if self.left:
             self.left.inorderTraversal()
         if self.data:
-            print(self.data)
+            print(self.data, end=" ")
         if self.right:
             self.right.inorderTraversal()
+
+    def preorderTraversal(self):
+        # root -> left -> right
+        if self is not None:
+            print(self.data, end=" ")
+            if self.left is not None:
+                self.left.preorderTraversal()
+            if self.right is not None:
+                self.right.preorderTraversal()
+
 
 if __name__ == "__main__":
     root = Node(20)
@@ -62,9 +73,15 @@ if __name__ == "__main__":
   / \   / \
  13  17    40
 
-    13 15 17 20 30 40
+inorder traversal 13 15 17 20 30 40
+preorder traversal 20 15 13 30 40
     """
 
-    #root.inorderTraversal()
-    root.search(15)
+    print("Inorder Traversal")
+    root.inorderTraversal()
+    print("\n")
+    print("Preorder Traversal")
+    root.preorderTraversal()
+    print()
+    # root.search(15)
 
