@@ -16,6 +16,33 @@ Node* createNode(int data) {
     return node;
 }
 
+void insertBST(Node** root, int data) {
+    Node* newNode = createNode(data);
+    if(*root == NULL) {
+        *root = newNode;
+        return;
+    }
+    Node* rootNode = *root;
+
+    if (data < rootNode->data) {
+        if (rootNode->left == NULL) {
+            rootNode->left = newNode;
+        }
+        else {
+            insertBST(&rootNode->left, data);
+        }
+    }
+    else if (data > rootNode->data) {
+        if (rootNode->right == NULL) {
+            rootNode->right = newNode;
+        }
+        else {
+            insertBST(&rootNode->right, data);
+        }
+    }
+    //free(newNode);
+}
+
 void insert(Node** root, int data) {
     // binary tree level order
     Node* newNode = createNode(data);
@@ -79,14 +106,22 @@ void freeTree(Node* root) {
 int main() {
 
     Node* root = NULL;
-    insert(&root, 20);
-    insert(&root, 30);
-    insert(&root, 40);
-    insert(&root, 50);
+    //insert(&root, 20);
+    //insert(&root, 30);
+    //insert(&root, 40);
+    //insert(&root, 50);
+
+    insertBST(&root, 20);
+    insertBST(&root, 30);
+    insertBST(&root, 40);
+    insertBST(&root, 15);
+    insertBST(&root, 17);
+    insertBST(&root, 13);
 
     printf("Inorder traversal of the binary search tree: ");
     inorderTraversal(root);
     printf("\n");
+    freeTree(root);
 
     return 0;
 }
