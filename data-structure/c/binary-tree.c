@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
 
 typedef struct node {
     int data;
@@ -9,6 +11,11 @@ typedef struct node {
 
 Node* createNode(int data) {
     Node* node = (Node*)malloc(sizeof(Node));
+    if (node == NULL) {
+        perror("Memory allocation failed");
+        exit(1);
+    }
+
     node->data = data;
     node->left = NULL;
     node->right = NULL;
@@ -93,7 +100,7 @@ void insert(Node** root, int data) {
             temp->left = newNode;
             return;
         } else {
-            printf("left: %d \n", temp->left->data);
+            //printf("left: %d \n", temp->left->data);
         }
         // if left child is not NULL, add queue of temp->left
         queue[++rear] = temp->left;
@@ -102,7 +109,7 @@ void insert(Node** root, int data) {
             temp->right = newNode;
             return;
         } else {
-            printf("right: %d \n", temp->right->data);
+            //printf("right: %d \n", temp->right->data);
         }
         // same as left logic
         queue[++rear] = temp->right;
@@ -133,6 +140,32 @@ void postorderTraversal(Node* root) {
     printf("%d ", root->data);
 }
 
+bool isBstMinMax(Node* root, int min, int max) {
+    /*
+     * it uses recursive to check subtree left and right, and make sure the subtree is lesser than parent in left, and greater than parent in right
+    */
+    if (root == NULL) return true;
+
+    if (root->data < min || root-> data > max) return false;
+
+    return isBstMinMax(root->left, min, root->data - 1) && isBstMinMax(root->right, root->data + 1, max);
+}
+
+bool isBstInorder(Node* root, int* prev) {
+    if (root == NULL)
+        return true;
+
+    if(!isBstInorder(root, prev))
+        return false;
+
+    if(*prev >= root->data)
+        return false;
+
+    *prev = root->data;
+
+    return isBstInorder(root, prev);
+}
+
 
 void freeTree(Node* root) {
     if (root == NULL)
@@ -146,33 +179,46 @@ void freeTree(Node* root) {
 int main() {
 
     Node* root = NULL;
-    //insert(&root, 20);
-    //insert(&root, 30);
-    //insert(&root, 40);
-    //insert(&root, 50);
+    Node* rootBst = NULL;
 
-    insertBST(&root, 20);
-    insertBST(&root, 30);
-    insertBST(&root, 40);
-    insertBST(&root, 15);
-    insertBST(&root, 17);
-    insertBST(&root, 13);
+    insert(&root, 20);
+    insert(&root, 30);
+    insert(&root, 40);
+    insert(&root, 15);
+    insert(&root, 17);
+    insert(&root, 13);
+
+    insertBST(&rootBst, 20);
+    insertBST(&rootBst, 30);
+    insertBST(&rootBst, 40);
+    insertBST(&rootBst, 15);
+    insertBST(&rootBst, 17);
+    insertBST(&rootBst, 13);
 
     printf("Inorder traversal of the binary search tree: ");
-    inorderTraversal(root);
+    inorderTraversal(rootBst);
     printf("\n");
 
     printf("Preorder traversal of the binary search tree: ");
-    preorderTraversal(root);
+    preorderTraversal(rootBst);
     printf("\n");
 
     printf("Postorder traversal of the binary search tree: ");
-    postorderTraversal(root);
+    postorderTraversal(rootBst);
     printf("\n");
 
+    bool isBstMinMaxB = isBstMinMax(rootBst, INT_MIN, INT_MAX);
+    printf("The tree is BST (MIN MAX): %s\n", isBstMinMaxB ? "true" : "false");
 
+    int prev = INT_MIN;
+    bool isBstInorderB = isBstInorder(rootBst, &prev);
+    printf("The tree is BST (Inorder Traversal): %s\n", isBstInorderB ? "true" : "false");
+
+    //bool isBstMinMax = isBstMinMax(rootBst, INT_MIN, INT_MAX);
+    //printf("The tree is BST (MIN MAX): %s\n", isBstMinMax ? "true" : "false");
 
     freeTree(root);
+    freeTree(rootBst);
 
     return 0;
 }
