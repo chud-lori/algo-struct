@@ -61,17 +61,6 @@ void deleteTree(TreeNode* root) {
 }
 
 int maxDepth(TreeNode* root) {
-    /*
-     * 1
-     */
-    if (root == nullptr) return 0;
-
-    int leftHeight = maxDepth(root->left);
-    int rightHeight = maxDepth(root->right);
-    return 1 + std::max(leftHeight, rightHeight);
-}
-
-int maxDepth2(TreeNode* root) {
     if (root == nullptr) return 0;
 
     int leftHeight = maxDepth(root->left);
