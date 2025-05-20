@@ -78,9 +78,14 @@ int main() {
     TreeNode* root1 = new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)));
     std::cout << "Max for Tree 1: " << maxDepth(root1) << std::endl;
 
+    deleteTree(root1);
+    root1 = nullptr;
+
     TreeNode* root2 = new TreeNode(1, nullptr, new TreeNode(2));
     std::cout << "Max for Tree 2: " << maxDepth(root2) << std::endl;
 
+    deleteTree(root2);
+    root2 = nullptr;
 
     return 0;
 }
