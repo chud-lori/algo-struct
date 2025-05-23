@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <map>
+#include <list>
 
 class Graph {
     // Adjacency matrix to store graph edges
@@ -33,6 +35,30 @@ class Graph {
         }
 };
 
+class GraphList {
+    // adjacency list to store graph
+    std::map<int, std::list<int> > adjList;
+
+    public:
+        void add_edge(int u, int v) {
+            adjList[u].push_back(v);
+            adjList[v].push_back(u);
+        }
+
+        void print() {
+            std::cout << "Adjacency list of the Graph: " << std::endl;
+            // Iterate over each vertex
+            for(auto i : adjList) {
+                std::cout << i.first << " -> ";
+                // Iterate over the connected vertices
+                for(auto j : i.second) {
+                    std::cout << j << " ";
+                }
+                std::cout << std::endl;
+            }
+        }
+};
+
 int main() {
     // number of vertices
     int n = 4;
@@ -47,6 +73,13 @@ int main() {
 
     // print the adjacency matrix representation of the graph
     g.print();
+
+    GraphList gList;
+    gList.add_edge(1, 0);
+    gList.add_edge(2, 0);
+    gList.add_edge(1, 2);
+
+    gList.print();
 
     return 0;
 }
