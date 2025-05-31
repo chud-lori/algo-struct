@@ -1,151 +1,163 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX 3
-#define MIN 2
+#define MAX 3  // Maximum number of keys in a node
+#define MIN 2  // Minimum number of keys in a node (except root)
 
+// B-tree node structure
 struct BTreeNode {
-    int val[MAX + 1], count;
-    struct BTreeNode *link[MAX + 1];
+    int val[MAX + 1];        // Array to store keys/values (1-based indexing)
+    int count;               // Number of keys currently in node
+    struct BTreeNode *link[MAX + 1];  // Array of pointers to child nodes
 };
 
-struct BTreeNode *root = NULL;
+struct BTreeNode *root = NULL;  // Global root pointer, initialize to NULL
 
-// Create a node
+// Creates a new B-tree node
 struct BTreeNode* createNode(int val, struct BTreeNode* child) {
-    struct BTreeNode* newNode;
-    newNode = (struct BTreeNode*) malloc(sizeof(struct BTreeNode));
-    newNode->val[1] = val;
-    newNode->count = 1;
-    newNode->link[0] = root;
-    newNode->link[1] = child;
-
+    struct BTreeNode* newNode = (struct BTreeNode*) malloc(sizeof(struct BTreeNode));
+    newNode->val[1] = val;    // Store value in first position (1-based indexing)
+    newNode->count = 1;       // Set count to 1 as we're adding first value
+    newNode->link[0] = root;  // Left child
+    newNode->link[1] = child; // Right child
     return newNode;
 }
 
-// Insert Node
+// Inserts a value into a non-full node at specified position
 void insertNode(int val, int pos, struct BTreeNode* node, struct BTreeNode* child) {
-    int j = node->count;
+    int j = node->count;  // Start from last element
+    // Shift elements to right to make space for new value
     while (j > pos) {
-        node->val[j + 1] = node->val[j];
-        node->link[j + 1] = node->link[j];
+        node->val[j + 1] = node->val[j];    // Shift values
+        node->link[j + 1] = node->link[j];  // Shift child pointers
         j--;
     }
-    node->val[j + 1] = val;
-    node->link[j + 1] = child;
-    node->count++;
+    node->val[j + 1] = val;    // Insert new value
+    node->link[j + 1] = child; // Insert new child pointer
+    node->count++;             // Increment count
 }
 
-// Split node
-void splitNode(int val, int* pval, int pos, struct BTreeNode* node, struct BTreeNode* child, struct BTreeNode** newNode) {
-    int median, j;
-
-    if (pos > MIN) {
+// Splits a full node during insertion
+void splitNode(int val, int* pval, int pos, struct BTreeNode* node,
+               struct BTreeNode* child, struct BTreeNode** newNode) {
+    int median;
+    // Determine median position
+    if (pos > MIN)
         median = MIN + 1;
-    }
-    else {
+    else
         median = MIN;
-    }
 
+    // Create new node to store split values
     *newNode = (struct BTreeNode*) malloc(sizeof(struct BTreeNode));
-    j = median + 1;
+
+    // Move values and pointers from median+1 to MAX to new node
+    int j = median + 1;
     while (j <= MAX) {
         (*newNode)->val[j - median] = node->val[j];
         (*newNode)->link[j - median] = node->link[j];
         j++;
     }
-    node->count = median;
-    (*newNode)->count = MAX - median;
 
-    if (pos <= MIN) {
+    // Update counts for both nodes
+    node->count = median;      // Original node now has median elements
+    (*newNode)->count = MAX - median;  // New node has remaining elements
+
+    // Insert the new value in appropriate node
+    if (pos <= MIN)
         insertNode(val, pos, node, child);
-    }
-    else {
+    else
         insertNode(val, pos - median, *newNode, child);
-    }
 
+    // Setup the median value to move up to parent
     *pval = node->val[node->count];
     (*newNode)->link[0] = node->link[node->count];
     node->count--;
 }
 
-// Set the value
+// Recursive function to set value in B-tree
 int setValue(int val, int* pval, struct BTreeNode* node, struct BTreeNode** child) {
     int pos;
+
+    // If node is NULL, this is insertion point
     if (!node) {
         *pval = val;
         *child = NULL;
-        return 1;
+        return 1;  // Return 1 to indicate insertion needed
     }
 
-    if (val < node->val[1]) {
+    // Find position where value should be inserted
+    if (val < node->val[1])
         pos = 0;
-    }
     else {
+        // Find appropriate position, checking for duplicates
         for (pos = node->count; (val < node->val[pos] && pos > 1); pos--) {
             if (val == node->val[pos]) {
-                printf("Duplicate are not permitted\n");
+                printf("Duplicates are not permitted\n");
                 return 0;
             }
         }
     }
 
+    // Recursively set value in appropriate child
     if (setValue(val, pval, node->link[pos], child)) {
         if (node->count < MAX) {
+            // Node has space, insert directly
             insertNode(*pval, pos, node, *child);
         }
         else {
+            // Node is full, need to split
             splitNode(*pval, pval, pos, node, *child, child);
-            return 1;
+            return 1;  // Indicate that splitting occurred
         }
     }
-
     return 0;
 }
 
-// Insert the value
+// Main insertion function
 void insert(int val) {
     int flag, i;
     struct BTreeNode* child;
 
+    // Try to insert value
     flag = setValue(val, &i, root, &child);
     if (flag) {
+        // If root was split or tree is empty, create new root
         root = createNode(i, child);
     }
 }
 
-// Search node
+// Search for a value in the B-tree
 void search(int val, int* pos, struct BTreeNode* myNode) {
     if (!myNode) {
-        *pos = -1;
+        *pos = -1;  // Value not found
         return;
     }
 
-    if (val < myNode->val[1]) {
+    // Find position in current node
+    if (val < myNode->val[1])
         *pos = 0;
-    }
     else {
-        for (*pos = myNode->count; (val < myNode->val[*pos] && *pos > 1); (*pos)--);
+        for (*pos = myNode->count;
+             (val < myNode->val[*pos] && *pos > 1);
+             (*pos)--);
         if (val == myNode->val[*pos]) {
             printf("%d is found\n", val);
             return;
         }
     }
-
+    // Continue search in appropriate child node
     search(val, pos, myNode->link[*pos]);
-
-    return;
 }
 
-// Traverse then nodes
+// In-order traversal of B-tree
 void traversal(struct BTreeNode* myNode) {
     int i;
     if (myNode) {
         for(i = 0; i < myNode->count; i++) {
-            traversal(myNode->link[i]);
-            printf("%d ", myNode->val[i + 1]);
+            traversal(myNode->link[i]);     // Visit left subtree
+            printf("%d ", myNode->val[i + 1]); // Print current value
         }
-        traversal(myNode->link[i]);
+        traversal(myNode->link[i]);         // Visit rightmost subtree
     }
 }
 
