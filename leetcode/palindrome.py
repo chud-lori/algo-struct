@@ -15,5 +15,7 @@ def is_palindrome(s: str):
 
     return s == rev
 
-#print(is_palindrome("race a car"))
+print(is_palindrome("race a car"))
 print(is_palindrome("0P"))
+print(is_palindrome("kasur rusak"))
+
