@@ -18,11 +18,6 @@ int majorityElements(vector<int>& nums) {
         di[nums[i]] = 1;
     }
 
-
-    //for (const auto& pair : di) {
-    //    std::cout << "Key: " << pair.first << ", Value: " << pair.second << std::endl;
-    //}
-
     int maxNum = di.begin()->first;
     int maxVal = di.begin()->second;
     for(const pair<const int, int>& d : di) {
@@ -33,20 +28,16 @@ int majorityElements(vector<int>& nums) {
     }
 
     return maxNum;
-    //return 1;
-
 }
+
 int majorityElementss(vector<int>& nums) {
     sort(nums.begin(), nums.end());
     int s = nums.size();
     return nums[s/2];
-    //for(int i = 0; i < nums.size(); ++i) {
-    //
-    //}
 }
 
 int majorityElement(vector<int>& nums) {
-// Boyer-Moore Voting Algorithm
+    // Boyer-Moore Voting Algorithm
 
     int candidate = 0;
     int count = 0;
